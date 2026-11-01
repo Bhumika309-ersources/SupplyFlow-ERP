@@ -242,6 +242,18 @@ The performance investigation identified areas that could become relevant if the
 
 These are not current cleanup requirements because the mock dataset is small.
 
+### Lint / Prettier Verification Finding
+
+Running `npm run lint` produced 6,472 reported problems, including 6,463 Prettier errors and 9 warnings. The dominant error was `prettier/prettier` reporting `Delete 'ΓÉì'` across many files.
+
+Further verification showed that:
+- `git status` reported no tracked source-file modifications.
+- `git diff --stat` was empty.
+- The committed `HEAD` version of `eslint.config.js` passed `npx prettier --check`.
+- The working-tree copy of `eslint.config.js` produced the same formatting warning pattern.
+- No source files were modified during the investigation.
+
+Therefore, the lint output is treated as an environment/encoding or line-ending verification issue rather than confirmed source-code cleanup. No automatic `--fix` was applied.
 
 
 \*\*Classification: FUTURE CONSIDERATION\*\*
